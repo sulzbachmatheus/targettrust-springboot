@@ -1,5 +1,6 @@
 package br.com.tt.petshop.controller;
 
+import br.com.tt.petshop.exception.BusinessException;
 import br.com.tt.petshop.model.Cliente;
 import br.com.tt.petshop.service.ClienteService;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Controller
 public class ClienteController {
-    //clienteService está sendo instanciado por baixo dos panos
+
     private final ClienteService clienteService;
 
     public ClienteController(ClienteService clienteService) {
@@ -22,7 +23,7 @@ public class ClienteController {
 
     @GetMapping("/")
     public String index(Model model){
-        model.addAttribute("Sistema", "PetShop");
+        model.addAttribute("sistema", "PetShop");
         List<Cliente> listaClientes = clienteService.listar();
         model.addAttribute("clientes", listaClientes);
         return "index";
@@ -34,9 +35,13 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente-form")
-    public RedirectView clienteForm(Cliente novoCliente){
-        clienteService.adicionar(novoCliente);
-        return new RedirectView("/");
+    public String clienteForm(Cliente novoCliente, Model model){
+        try {
+            clienteService.adicionar(novoCliente);
+        } catch (BusinessException e) {
+            model.addAttribute("erro", e.getMessage());
+        }
+        return "cliente-adicionar";
     }
 
     @GetMapping("/cliente-excluir")
