@@ -1,0 +1,16 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+<!--<h1 th:text="${Sistema}"></h1>-->
+<h2>Animais:</h2>
+<ul th:each="ani : ${animais}">
+    <li>
+        Nome:<span th:text="${ani.nome}"></span><br>
+        Data de Nascimento:<span th:text="${ani.dataNascimento}"></span><br>
+        Espécie:<span th:text="${ani.especie}"></span><br>
+        ID do Cliente:<span th:text="${ani.clientId}"></span>
+    </li>
+</ul>
+<a th:href="@{/animal-adicionar(clientId=${param.clientId})}">Adicionar</a>
+
+</body>
+</html>
